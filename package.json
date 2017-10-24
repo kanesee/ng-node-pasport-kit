@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/kanesee/ng-node-passport-kit#readme",
   "dependencies": {
-    "bcrypt": "^3.10.9",
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "compression": "^1.7.1",
     "express": "^4.16.2",
