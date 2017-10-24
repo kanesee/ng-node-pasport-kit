@@ -1,0 +1,30 @@
+{
+  "name": "ng-node-passport-kit",
+  "version": "1.0.0",
+  "description": "Starter kit for angular/nodejs app with passport/jwt authentication",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kanesee/ng-node-passport-kit.git"
+  },
+  "author": "kanesee",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/kanesee/ng-node-passport-kit/issues"
+  },
+  "homepage": "https://github.com/kanesee/ng-node-passport-kit#readme",
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "compression": "^1.7.1",
+    "express": "^4.16.2",
+    "jsonwebtoken": "^8.1.0",
+    "passport": "^0.4.0",
+    "passport-http": "^0.3.0",
+    "promise-mysql": "^3.1.1",
+    "uuid": "^3.1.0"
+  }
+}

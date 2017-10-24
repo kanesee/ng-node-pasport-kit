@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en" ng-app="MyApp">
+<head>
+  <link rel="stylesheet" type="text/css"
+        href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css"
+        href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css">
+  <link rel="stylesheet" type="text/css"
+        href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <link rel="stylesheet" type="text/css"
+        href="/assets/css/shared.css">
+
+  <!-- #### JS #### -->
+  <script
+    src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"
+    crossorigin="anonymous">
+  </script>
+  <script
+    src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js">
+  </script>
+  <script
+    src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js">
+  </script>
+  <script
+    src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-route.min.js">
+  </script>
+  <script
+    src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular-sanitize.min.js">
+  </script>
+  <script
+    src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.5.0/ui-bootstrap-tpls.min.js">
+  </script>
+
+
+  
+  <!-- angularjs app modules -->
+  <script src="/assets/js/app.js"></script>
+  <script src="/assets/js/auth.js"></script>
+  <script src="/ng/dirPagination/dirPagination.js"></script>
+  <script src="/ng/dirAuthCtrl/directive.js"></script>
+  <script src="/ng/userCtrl/controller.js"></script>
+  <script src="/ng/main/controller.js"></script>
+  <script src="/ng/login/controller.js"></script>
+  <script src="/ng/register/controller.js"></script>
+
+
+  <!-- misc -->
+  
+
+</head>
+<body ng-controller="UserCtrl">
+
+  <auth-ctrl></auth-ctrl>
+  
+  <div ng-view style="height: 100%"></div>
+
+</body>
+</html>

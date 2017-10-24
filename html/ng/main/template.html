@@ -1,0 +1,43 @@
+<div class="container" ng-controller="mainCtrl">
+  
+  <div class="row" ng-show="resultArray">
+    <div class="col-xs-12">
+      <table class="table">
+        <thead>
+          <th ng-click="sort('name')">
+            name
+            <i class="fa sort-icon"
+               ng-show="sortKey=='name'"
+               ng-class="{'fa-sort-amount-desc':reverse,'fa-sort-amount-asc':!reverse}"></i>
+          </th>
+        </thead>
+        <tbody>
+          <tr dir-paginate="item in resultArray
+                            | orderBy:sortKey:reverse 
+                            | emptyToEnd:sortKey
+                            | itemsPerPage:10 as pagedEntities">
+            <td>{{item}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="row" ng-show="resultArray">
+    <div class="col-xs-12">
+      <div class="text-centered">
+        <dir-pagination-controls></dir-pagination-controls>
+        <form ng-submit="gotoPage(pageNum)">
+          Goto Page
+          <input type="text" ng-model="pageNum">
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" type="text/css"
+      href="/ng/main/style.css">
+
+<style>
+
+</style>
