@@ -10,7 +10,7 @@ CREATE TABLE `user` (
   `userid` varchar(100) NOT NULL DEFAULT '',
   `passhash` varchar(100) DEFAULT NULL,
   PRIMARY KEY (`userid`)
-) ENGINE=InnoDB DEFAULT;
+) ENGINE=InnoDB;
 ```
 2. edit shared/db-promise.js and change exports.pool database properties
 3. Run `npm install` to install the dependences
