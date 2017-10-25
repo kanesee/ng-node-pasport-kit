@@ -1,3 +1,12 @@
+const USER_ACTIVE_UNTIL = {
+  pageRefresh: 'localvar',
+  sessionExpires: 'sessionStorage',
+  forever: 'localStorage'
+}
+
+const SESSION_PERSISTANCE = USER_ACTIVE_UNTIL.forever;
+
+
 app.constant('AUTH_EVENTS', {
   loginSuccess: 'auth-login-success',
   loginFailed: 'auth-login-failed',
@@ -12,7 +21,7 @@ app.constant('USER_ROLES', {
   admin: 'admin',
   editor: 'editor',
   guest: 'guest'
-})
+});
 
 app.factory('AuthService', function ($http, $window, UserSession) {
   var authService = {};
@@ -29,8 +38,7 @@ app.factory('AuthService', function ($http, $window, UserSession) {
         var user = null;
         if( resp.data ) {
           user = resp.data.user;
-          UserSession.create(resp.data.user, resp.data.token);
-//          $window.localStorage.setItem('token', resp.data.token);
+          UserSession.create(user, resp.data.token);
         }
         return user;
       })
@@ -50,7 +58,6 @@ app.factory('AuthService', function ($http, $window, UserSession) {
   
   authService.logOut = function() {
     UserSession.destroy();
-    $window.localStorage.removeItem('token');
   },
 
   authService.register = function(userid, password) {
@@ -76,19 +83,77 @@ app.factory('AuthService', function ($http, $window, UserSession) {
   return authService;
 });
 
-app.service('UserSession', function() {
+app.service('UserSession', [
+  '$window',
+  function($window) {
+    var user;
+    var token;
   
-  this.create = function (user, token) {
-    this.user = user;
-    this.token = token;
-  };
-  
-  this.destroy = function () {
-    this.user = null;
-    this.token = null;
-  };
-  
-})
+    this.create = function (user, token) {
+      switch(SESSION_PERSISTANCE) {
+        case USER_ACTIVE_UNTIL.pageRefresh:
+          user = user;
+          token = token;
+          break;
+        case USER_ACTIVE_UNTIL.sessionExpires:
+          $window.sessionStorage.setItem('user', JSON.stringify(user));
+          $window.sessionStorage.setItem('token', JSON.stringify(token));
+          break;
+        case USER_ACTIVE_UNTIL.forever:
+          $window.localStorage.setItem('user', JSON.stringify(user));
+          $window.localStorage.setItem('token', JSON.stringify(token));
+          break;
+      }
+    };
+
+    this.destroy = function () {
+      user = null;
+      token = null;
+      $window.sessionStorage.removeItem('user');
+      $window.sessionStorage.removeItem('token');
+      $window.localStorage.removeItem('user');
+      $window.localStorage.removeItem('token');
+    };
+
+    this.getUser = function() {
+      switch(SESSION_PERSISTANCE) {
+        case USER_ACTIVE_UNTIL.pageRefresh:
+          return user;
+        case USER_ACTIVE_UNTIL.sessionExpires:
+          var user = $window.sessionStorage.user;
+          if( user ) {
+            user = JSON.parse(user);
+          }
+          return user;
+        case USER_ACTIVE_UNTIL.forever:
+          var user = $window.localStorage.user;
+          if( user ) {
+            user = JSON.parse(user);
+          }
+          return user;
+      }
+    }
+    
+    this.getToken = function() {
+      switch(SESSION_PERSISTANCE) {
+        case USER_ACTIVE_UNTIL.pageRefresh:
+          return token;
+        case USER_ACTIVE_UNTIL.sessionExpires:
+          var token = $window.sessionStorage.token;
+          if( token ) {
+            token = JSON.parse(token);
+          }
+          return token;
+        case USER_ACTIVE_UNTIL.forever:
+          var token = $window.localStorage.token;
+          if( token ) {
+            token = JSON.parse(token);
+          }
+          return token;
+      }
+    }
+  }
+])
 
 /************************************
  * Intercepts requests and responses
@@ -107,17 +172,16 @@ app.factory('authHandler', [
     return {
       request: function(config) {
         config.headers = config.headers || {};
-//        if( $window.localStorage.token 
-        if( UserSession.token
+        var token = UserSession.getToken();
+        if( token
         &&  !config.headers.Authorization
         ) {
-            config.headers.Authorization = 'Bearer ' + UserSession.token
+            config.headers.Authorization = 'Bearer ' + token;
         }
         return config;
       },
       responseError: function(rejection) {
         if (rejection != null && rejection.status === 401) {
-//          $window.localStorage.removeItem('token');
           UserSession.destroy();
           $location.url("/login");
         }

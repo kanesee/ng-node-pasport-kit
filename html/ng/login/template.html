@@ -9,18 +9,18 @@
           <input type="text"
                  class="form-control"
                  placeholder="UserId"
-                 ng-model="user.userid">
+                 ng-model="loginUser.userid">
         </div>
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password"
                  class="form-control"
                  placeholder="Password"
-                 ng-model="user.password">
+                 ng-model="loginUser.password">
         </div>
         <button type="submit"
                 class="btn btn-default"
-                ng-click="login()">Login</button>
+                ng-click="login(loginUser)">Login</button>
         <a href="#/register">Register</a>
         
         <div class="alert alert-danger"

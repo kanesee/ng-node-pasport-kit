@@ -1,24 +1,13 @@
 app.controller('loginCtrl',
   ['$scope'
-  ,'$rootScope'
-  ,'$http'
-  ,'$window'
-  ,'$location'
-  , 'AuthService'
   , 'AUTH_EVENTS'
   , controllerFn
   ]);
 
 function controllerFn($scope
-                    , $rootScope
-                    , $http
-                    , $window
-                    , $location
-                    , AuthService
                     , AUTH_EVENTS
                     ) {
   $scope.error = null;
-  $scope.user = {};
   
   // private vars
   var self = this;
@@ -27,23 +16,18 @@ function controllerFn($scope
    * scope functions
    *************************/
   
-  $scope.login = function() {
-    $scope.error = null;
+  this.init = function() {
+    $scope.$on(AUTH_EVENTS.loginSuccess, function (event, user) {
+      console.log('Login successful: ' + user); // 'Data to send'
+      $scope.error = null;
+    });
     
-    AuthService.logIn($scope.user.userid, $scope.user.password)
-      .then(function(user) {
-//        $location.path('/');
-        $rootScope.$broadcast(AUTH_EVENTS.loginSuccess);
-        $scope.setUser(user);      
-      })
-      .catch(function(err) {
-        $scope.error = err.data;
-        $rootScope.$broadcast(AUTH_EVENTS.loginFailed);
-      })
-  }
-  
-  $scope.isLoggedIn = function() {
-    return AuthService.isAuthenticated();
+    $scope.$on(AUTH_EVENTS.loginFailed, function (event, error) {
+      console.log('login failed: ' + JSON.stringify(error));
+      $scope.error = error.data;
+    });
+    
   }
 
+  this.init();
 }
