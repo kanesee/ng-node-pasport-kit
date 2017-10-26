@@ -6,10 +6,11 @@ var dbp = require('../shared/db-promise.js');
 var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
-var uuidv4 = require('uuid/v4');
 var jwt = require('jsonwebtoken');
-const SERVER_SECRET = uuidv4();
 const JWT_EXPIRATION = (60 * 60); // one hour
+
+var uuidv4 = require('uuid/v4');
+const SERVER_SECRET = uuidv4();
 
 exports.passport = require('passport');
 var BasicStrategy = require('passport-http').BasicStrategy;

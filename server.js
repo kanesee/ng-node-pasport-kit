@@ -10,9 +10,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: true})); // to support URL-encoded bodies
 
 app.use(auth.passport.initialize());
-//app.use(auth.passport.session());
-// the following line requires auth for OPTION which is bad for CORS
-// app.use(auth.passport.authenticate('basic')); // protects pages themselves
 
 /*********************************
  * Serve all other content under /html
