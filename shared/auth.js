@@ -146,13 +146,13 @@ exports.returnAuthResponse = function(req, res) {
 exports.ensureAuthenticatedElseError = function(req, res, next) {
   var token = getToken(req.headers);
   if( token ) {
-    var payload = jwt.decode(token, SERVER_SECRET);
-    if( payload ) {
-//      console.log('payload: ' + JSON.stringify(payload));
+    try {
+      var payload = jwt.verify(token, SERVER_SECRET);
+      // console.log('payload: ' + JSON.stringify(payload));
       // check if user still exists in database if you'd like
       res.locals.user = payload.user;
       next();
-    } else {
+    } catch(err) {
       res.status(401).send('Invalid Authentication');
     }
   } else {
